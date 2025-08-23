@@ -29,7 +29,7 @@ sudo cp -r ./onnxruntime-linux-x64-1.21.0 /usr/lib/onnxruntime-linux-x64
 
 clone this repository
 ```
-
+git clone https://github.com/pym96/Go2-Adaptive-LIO.git
 ```
 - compile
 ```
