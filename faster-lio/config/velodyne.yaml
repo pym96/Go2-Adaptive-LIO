@@ -1,0 +1,48 @@
+common:
+  dataset: "go2_sim"
+  lid_topic: "/velodyne_points"        # Your Velodyne LiDAR topic from robot.xacro
+  imu_topic: "/trunk_imu"              # Your IMU topic from gazebo.xacro
+  time_sync_en: false                  # ONLY turn on when external time synchronization is really not possible
+
+preprocess:
+  lidar_type: 2                        # 2 for Velodyne LiDAR (HDL-32E)
+  scan_line: 32                        # HDL-32E has 32 scan lines
+  blind: 0.9                           # HDL-32E minimum range (matches URDF min_range and typical HDL-32E specs)
+  time_scale: 1e-3                     # Time scale for Velodyne LiDAR
+
+mapping:
+  acc_cov: 0.1                         # IMU accelerometer covariance
+  gyr_cov: 0.1                         # IMU gyroscope covariance  
+  b_acc_cov: 0.0001                    # Accelerometer bias covariance
+  b_gyr_cov: 0.0001                    # Gyroscope bias covariance
+  fov_degree: 180                      # Field of view
+  det_range: 130.0                     # HDL-32E detection range (matches URDF max_range)
+  extrinsic_est_en: true              # Disable online estimation - use fixed calibration
+  extrinsic_T: [ 0, 0, 0.0201 ]        # Translation from trunk (IMU) to velodyne frame
+  extrinsic_R: [ 1, 0, 0,              # Identity rotation (frames are aligned)
+                 0, 1, 0,
+                 0, 0, 1 ]
+
+publish:
+  path_publish_en: true                # Enable path publishing for odometry
+  scan_publish_en: true                # Publish point cloud output
+  scan_effect_pub_en: true             # Publish effective points
+  dense_publish_en: false              # Keep low density to save resources
+  scan_bodyframe_pub_en: true          # Publish scans in IMU body frame
+
+path_save_en: true                     # Save trajectory for analysis
+
+pcd_save:
+  pcd_save_en: false                   # Disable PCD saving for real-time performance
+  interval: -1                         # Not used when pcd_save_en is false
+
+feature_extract_enable: false          # Use direct methods instead of feature extraction
+point_filter_num: 6                   # Point filtering parameter
+max_iteration: 3                      # Maximum optimization iterations
+filter_size_surf: 0.5                 # Surface feature filter size
+filter_size_map: 0.5                  # Map filter size
+cube_side_length: 1000                # Local map cube size
+
+ivox_grid_resolution: 0.2              # Grid resolution for iVox (good balance for Go2)
+ivox_nearby_type: 18                   # Neighborhood type (18 is recommended)
+esti_plane_threshold: 0.1              # Plane estimation threshold

@@ -1,0 +1,7 @@
+struct imu_t
+{
+	float quaternion[4];
+    float gyroscope[3];
+    float accelerometer[3];
+	float rpy[3];
+}

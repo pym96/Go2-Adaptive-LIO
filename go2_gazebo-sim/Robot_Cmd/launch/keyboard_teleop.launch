@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<launch>
+
+    <node name="robot_cmd" pkg="robot_cmd" type="robot_cmd" respawn="false" output="screen">
+    </node>
+
+</launch>

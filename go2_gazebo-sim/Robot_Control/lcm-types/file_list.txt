@@ -1,0 +1,1 @@
+lcmtypes/imu_t.class lcmtypes/motor_cmd_t.class lcmtypes/motor_state_t.class lcmtypes/rc_cmd_t.class

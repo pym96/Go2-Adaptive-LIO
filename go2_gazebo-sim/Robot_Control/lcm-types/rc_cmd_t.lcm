@@ -1,0 +1,17 @@
+struct rc_cmd_t
+{
+	float linearVelX;
+	float linearVelY;
+	float linearVelZ;
+	float angularVelX;
+	float angularVelY;
+	float angularVelZ;
+	float roll;
+    float pitch;
+    float yaw;
+	float bodyHeight;
+	float stepHeight;
+	int32_t mode;
+	int32_t gait;
+	int32_t update;
+}

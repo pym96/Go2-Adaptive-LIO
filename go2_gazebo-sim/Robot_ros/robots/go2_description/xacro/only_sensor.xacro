@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<robot name="combined_robot" xmlns:xacro="http://ros.org/wiki/xacro">
+  
+  <!-- Include robot and sensor -->
+  <xacro:include filename="$(find realsense_gazebo_plugin)/urdf/rs200_simulation.xacro"/>
+  <xacro:include filename="$(find livox_laser_simulation)/urdf/livox_mid360.xacro"/>
+  <!-- <xacro:include filename="$(find livox_laser_simulation_new)/models/sensors_only/model.xacro"/> -->
+
+  <!-- Define the fixed joint to link the robot and sensor -->
+  <link name="base">
+    <visual>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <geometry>
+            <box size="0.001 0.001 0.001"/>
+        </geometry>
+    </visual>
+  </link>
+
+  <joint name="fixed_joint_between_robot_and_rgbd" type="fixed">
+    <parent link="base"/>
+    <child link="rs200_camera"/>
+    <origin xyz="0.35 0 0.1" rpy="0 0 0"/>
+  </joint>
+
+  <joint name="fixed_joint_between_robot_and_lidar" type="fixed">
+    <parent link="base"/>
+    <child link="livox_base"/>
+    <origin xyz="0.35 0 0.2" rpy="0 0 0"/>
+  </joint>
+
+</robot>

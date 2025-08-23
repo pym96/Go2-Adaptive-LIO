@@ -1,0 +1,12 @@
+float32 linearVel_x
+float32 linearVel_y
+float32 anguler_z
+float32 roll
+float32 pitch
+float32 step_Frequency
+float32 step_Height
+float32 body_Height
+uint8 cppAD
+uint8 mode
+int8 gait
+int8 startFlag

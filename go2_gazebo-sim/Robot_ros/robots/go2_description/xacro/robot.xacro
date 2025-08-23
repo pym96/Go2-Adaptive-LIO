@@ -1,0 +1,157 @@
+<?xml version="1.0"?>
+
+<robot name="go2" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:arg name="DEBUG" default="false"/>
+    <xacro:arg name="xyz" default="0.12 0.0 0.175" />
+    <xacro:arg name="rpy" default="0 0 0" />
+
+    <xacro:include filename="$(find go2_description)/xacro/const.xacro"/>
+    <xacro:include filename="$(find go2_description)/xacro/materials.xacro"/>
+    <xacro:include filename="$(find go2_description)/xacro/leg.xacro"/>
+    <!-- <xacro:include filename="$(find go2_description)/xacro/stairs.xacro"/> -->
+    <xacro:include filename="$(find go2_description)/xacro/gazebo.xacro"/>
+    <!-- <xacro:include filename="$(find go2_gazebo)/launch/stairs.urdf.xacro"/> -->
+    <xacro:include filename="$(find velodyne_description)/urdf/HDL-32E.urdf.xacro"/>
+
+    <!-- <xacro:stairs stairs="15" xpos="0" ypos="0" zpos="0" /> -->
+
+    <!-- Rotor related joint and link is only for demonstrate location. -->
+    <!-- Actually, the rotor will rotate and the joint is not fixed. Reduction ratio should be considered. -->
+
+    <!-- Debug mode will hung up the robot, use "true" or "false" to switch it. -->
+    <xacro:if value="$(arg DEBUG)">
+        <link name="world"/>
+        <joint name="base_static_joint" type="fixed">
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <parent link="world"/>
+            <child link="base"/>
+        </joint>
+    </xacro:if> 
+
+    <link name="base">
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <box size="0.001 0.001 0.001"/>
+            </geometry>
+        </visual>
+    </link>
+
+    <joint name="floating_base" type="fixed">
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <parent link="base"/>
+        <child link="trunk"/>
+    </joint>
+
+    <link name="trunk">
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="package://go2_description/meshes/trunk.dae" scale="1 1 1"/>
+            </geometry>
+            <!-- <material name="orange"/> -->
+        </visual>
+        <collision>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <box size="${trunk_length} ${trunk_width} ${trunk_height}"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <origin rpy="0 0 0" xyz="${trunk_com_x} ${trunk_com_y} ${trunk_com_z}"/>
+            <mass value="${trunk_mass}"/>
+            <inertia
+                ixx="${trunk_ixx}" ixy="${trunk_ixy}" ixz="${trunk_ixz}"
+                iyy="${trunk_iyy}" iyz="${trunk_iyz}"
+                izz="${trunk_izz}"/>  
+        </inertial>
+    </link>
+
+    <joint name="imu_joint" type="fixed">
+        <parent link="trunk"/>
+        <child link="imu_link"/>
+        <origin xyz="0.12 0 0.125" rpy="0 0 0"/>
+    </joint>
+
+    <!-- IMU -->
+    <link name="imu_link">
+        <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+            <box size="0.05 0.05 0.05"/>
+        </geometry>
+        </collision>
+        <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+            <box size="0.05 0.05 0.05"/>
+        </geometry>
+        <material name="green">
+            <color rgba="0 1 0 1"/>
+        </material>
+        </visual>
+        <inertial>
+        <mass value="1e-2" />
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+        </inertial>
+    </link>
+
+    <joint name="front_camera_joint" type="fixed">
+        <parent link="trunk"/>
+        <child link="front_camera"/>
+        <origin rpy="0 0 0" xyz="0.32715 -0.00003 0.04297"/>
+    </joint>
+
+    <link name="front_camera">
+    </link>
+
+    <!--
+    <joint name="load_joint" type="fixed">
+        <parent link="trunk"/>
+        <child link="load_link"/>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+    </joint>
+
+    <link name="load_link">
+        <inertial>
+            <mass value="5"/>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+        </inertial>
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0.2"/>
+            <geometry>
+                <box size="0.5 0.3 0.2"/>
+            </geometry>
+        </visual>
+        <collision>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <box size=".001 .001 .001"/>
+            </geometry>
+        </collision>
+    </link>
+-->
+<!-- 
+ <xacro:include filename="$(find velodyne_description)/urdf/VLP-16.urdf.xacro"/>
+  <xacro:VLP-16 parent="trunk" name="velodyne" topic="/velodyne_points" hz="20" samples="350" min_range="0.5" organize_cloud="true" >
+      <origin xyz="0.12 0.0 0.175" rpy="0 0 0" />
+  </xacro:VLP-16>    -->
+
+  <xacro:HDL-32E parent="trunk" name="velodyne" topic="/velodyne_points" hz="10" min_range="0.3"  >
+      <origin xyz="0.12 0.0 0.175" rpy="0 0 0" />
+  </xacro:HDL-32E>   
+
+    <!-- Livox-Mid360  -->
+  <!-- <xacro:include filename="$(find velodyne_description)/urdf/mid360.urdf.xacro" />
+  <xacro:mid360 name="livox_frame" parent="trunk" topic="/livox/lidar">
+    <origin xyz="$(arg xyz)" rpy="$(arg rpy)" />
+  </xacro:mid360> -->
+
+    <xacro:leg name="FR" mirror="-1" mirror_dae= "False" front_hind="1"  front_hind_dae="True"  />
+    <xacro:leg name="FL" mirror="1"  mirror_dae="True"   front_hind="1"  front_hind_dae="True"  />
+    <xacro:leg name="RR" mirror="-1" mirror_dae="False"  front_hind="-1" front_hind_dae="False" />
+    <xacro:leg name="RL" mirror="1"  mirror_dae="True"   front_hind="-1" front_hind_dae="False" />
+</robot>
