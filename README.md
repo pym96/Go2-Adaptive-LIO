@@ -16,9 +16,7 @@ sudo apt-get install libgoogle-glog-dev libeigen3-dev libpcl-dev libyaml-cpp-dev
 
 - onnxruntime configuration
 
-[onnx-release](https://github.com/microsoft/onnxruntime/releases/tag/v1.21.0)
-
-or
+[onnx-release](https://github.com/microsoft/onnxruntime/releases/tag/v1.21.0) or
 ```
 wget https://github.com/microsoft/onnxruntime/releases/download/v1.21.0/onnxruntime-linux-x64-1.21.0.tgz
 ```
