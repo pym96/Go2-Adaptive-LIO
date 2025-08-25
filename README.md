@@ -41,7 +41,8 @@ catkin build
 
 - run simulation (source devel/setup.bash) first 
 ```
-roslaunch robot_control RobotBringup.launch 
+roslaunch robot_control RobotBringup.launch # Small room scene simulation.
+roslaunch robot_control RobotBringupStairs.launch  # Scene simulation with stairs.
 ```
 
 - run keyboard cmd control (w a s d to control velocity, space bar to stop)
