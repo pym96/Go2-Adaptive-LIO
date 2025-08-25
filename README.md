@@ -1,5 +1,10 @@
 # 3d Unitree Quadruped robot LIO simulation
 
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/c56ca79e-c744-48f7-a4ca-7d35727373a3" alt="Timeline1" />
+</p>
+
+
 ## prerequisites
 - ros1 noetic or melodic
 ```
